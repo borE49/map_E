@@ -1,0 +1,434 @@
+<!-- Código actualizado: sin imágenes en la vista expandida -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa Mental - Ética: Libertad y Autonomía ¨JOHANDER JOSÉ SARMIENTO RAMIREZ¨</title>
+  <style>
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #edf2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+
+
+    :root {
+      --principal: #1e3a8a;
+      --grupo1: #2563eb;
+      --grupo1-sub1: #3b82f6;
+      --grupo1-sub2: #60a5fa;
+      --grupo1-sub3: #93c5fd;
+      --grupo2: #059669;
+      --grupo2-sub1: #10b981;
+      --grupo2-sub2: #34d399;
+      --grupo3: #dc2626;
+    }
+
+ html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #edf2f7;
+}
+
+
+.container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: transform 0.8s ease;
+  transform-origin: center center;
+}
+
+
+
+    .node {
+      position: absolute;
+      border: 3px solid;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      width: 160px;
+      height: 160px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+    }
+
+.nube1 {
+  border-radius: 75% 25% 60% 40% / 60% 70% 30% 40%;
+}
+
+.nube2 {
+  border-radius: 80% 20% 70% 30% / 50% 80% 20% 50%;
+}
+
+.nube3 {
+  border-radius: 65% 35% 75% 25% / 55% 60% 40% 45%;
+}
+
+.nube4 {
+  border-radius: 55% 45% 35% 65% / 60% 55% 45% 50%;
+}
+
+.nube5 {
+  border-radius: 65% 35% 45% 55% / 50% 60% 40% 50%;
+}
+
+.nube6 {
+  border-radius: 90% 10% 60% 40% / 40% 75% 25% 55%;
+}
+
+.nube7 {
+  border-radius: 85% 15% 55% 45% / 70% 30% 50% 50%;
+}
+
+.nube8 {
+  border-radius: 60% 40% 50% 50% / 65% 35% 65% 35%;
+}
+
+.nube9 {
+  border-radius: 78% 22% 68% 32% / 55% 70% 30% 45%;
+}
+
+.nube10 {
+  border-radius: 73% 27% 63% 37% / 50% 80% 20% 50%;
+}
+
+
+
+    .node.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .node:active {
+      animation: clickPop 0.3s ease;
+    }
+
+    @keyframes clickPop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .fullview {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: justify;
+      color: #fff;
+      padding: 40px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+
+    .fullview h1 {
+  position: relative;
+  font-size: 32px;
+  margin-bottom: 30px;
+  padding-left: 40px;
+  cursor: pointer;
+}
+
+.fullview h1::before {
+  content: "➤";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-size: 32px;
+  color: #fff;
+  animation: arrowPop 0.5s ease-in-out;
+}
+
+@keyframes arrowPop {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+    
+
+.fullview p {
+  font-size: 20px;
+  line-height: 1.6;
+  text-align: justify;
+  margin-bottom: 20px;
+  max-width: 900px;
+}
+
+
+    .fullview.active {
+      display: flex;
+    }
+
+    @keyframes radialExpand {
+  from {
+    clip-path: circle(0% at center);
+  }
+  to {
+    clip-path: circle(150% at center);
+  }
+}
+
+.fullview.active {
+  display: flex;
+  animation: radialExpand 0.8s ease forwards;
+}
+.autor {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 8px;
+  z-index: 20;
+}
+
+  </style>
+</head>
+<body>
+  <div class="autor">Creado por JOHANDER JOSÉ SARMIENTO RAMIREZ</div>
+<div class="container" id="mapa"></div>
+<div class="fullview" id="pantallaCompleta"></div>
+<script>
+  const colores = {
+  "Elementos constitutivos de la ética: libertad y autonomía": "var(--principal)",
+
+  // LIBERTAD
+  "Libertad": "var(--grupo1)",
+  "Concepto de Libertad": "var(--grupo1-sub1)",
+  "Tipos de libertad": "var(--grupo1-sub2)",
+  "Relación entre libertad y ética": "var(--grupo1-sub3)",
+  "Relación entre libertad y responsabilidad social": "var(--grupo1-sub1)",
+
+  // TIPOS DE LIBERTAD
+  "Libertad Física": "var(--grupo1-sub1)",
+  "Libertad Moral": "var(--grupo1-sub2)",
+  "Libertad Política": "var(--grupo1-sub3)",
+  "Libertad Interior": "var(--grupo1-sub1)",
+  "Libertad de Culto": "var(--grupo1-sub2)",
+  "Libertad de Elección": "var(--grupo1-sub3)",
+  "Libertad de Circulación": "var(--grupo1-sub1)",
+  "Libertad Académica": "var(--grupo1-sub2)",
+
+  // AUTONOMÍA
+  "Autonomía": "var(--grupo2)",
+  "Concepto de Autonomía": "var(--grupo2-sub1)",
+  "Relación entre autonomía y ética": "var(--grupo2-sub2)",
+  "Relación entre autonomía y responsabilidad social": "var(--grupo2-sub1)",
+
+  // DIFERENCIA
+  "Diferencia entre libertad y autonomía": "var(--grupo3)"
+};
+
+
+const nodosTerminales = [
+  "Concepto de Libertad",
+  "Concepto de Autonomía",
+  "Libertad Física",
+  "Libertad Moral",
+  "Libertad Política",
+  "Libertad Interior",
+  "Libertad de Culto",
+  "Libertad de Elección",
+  "Libertad de Circulación",
+  "Libertad Académica",
+  "Relación entre libertad y ética",
+  "Relación entre libertad y responsabilidad social",
+  "Relación entre autonomía y ética",
+  "Relación entre autonomía y responsabilidad social",
+  "Diferencia entre libertad y autonomía"
+];
+
+
+  const mapa = document.getElementById("mapa");
+  const fullview = document.getElementById("pantallaCompleta");
+
+  contenidos = {
+  "raiz": {
+    "texto": "Elementos constitutivos de la ética: libertad y autonomía",
+    "hijos": ["Libertad", "Autonomía", "Diferencia entre libertad y autonomía"]
+  },
+  "Libertad": {
+    "concepto": "La libertad es uno de los valores más importantes de la vida humana. Se entiende como la capacidad de cada individuo para tomar decisiones por sí mismo...",
+    "hijos": [
+      "Concepto de Libertad",
+      "Tipos de libertad",
+      "Relación entre libertad y ética",
+      "Relación entre libertad y responsabilidad social"
+    ]
+  },
+  "Concepto de Libertad": {
+    "concepto": "La libertad es uno de los valores más importantes de la vida humana. Se entiende como la capacidad de cada individuo para tomar decisiones por sí mismo, sin estar totalmente condicionado por factores externos como la presión social, la coerción o el miedo. <br><br> Ser libre no significa hacer cualquier cosa en cualquier momento, sino tener la posibilidad de elegir entre diferentes opciones de manera consciente y reflexiva.  <br><br> La libertad está conectada directamente con la dignidad humana, pues una persona que no puede decidir por sí misma está siendo tratada como un medio y no como un fin. En la vida cotidiana, la libertad se expresa en las decisiones que tomamos: qué estudiar, qué opinar, con quién relacionarnos, cómo vestir, qué religión seguir o no seguir ninguna. Pero también está presente en aspectos más profundos, como el hecho de poder actuar conforme a nuestras creencias y asumir con responsabilidad las consecuencias de nuestras elecciones. Por ello, se dice que la libertad no solo es un derecho, sino también una responsabilidad."
+  },
+  "Tipos de libertad": {
+    "concepto": "La libertad no es un concepto único ni absoluto. Existen diversos tipos de libertad que se manifiestan en diferentes ámbitos de la vida. Cada una es importante para el desarrollo personal, social y ético de los individuos.",
+    "hijos": [
+      "Libertad Física", "Libertad Moral", "Libertad Política", "Libertad Interior",
+      "Libertad de Culto", "Libertad de Elección", "Libertad de Circulación", "Libertad Académica"
+    ]
+  },
+  "Libertad Física": {
+    "concepto": "Es la forma más elemental de libertad, relacionada con el cuerpo y el movimiento. Implica que el individuo no esté sometido a detenciones arbitrarias, esclavitud o cualquier forma de restricción física impuesta sin justificación ética o legal. Aunque parece una libertad evidente en la actualidad, sigue siendo vulnerada en muchas partes del mundo a través de sistemas de represión, trata de personas o prisión política.  <br><br> Desde la ética, la libertad física es indispensable porque sin ella es imposible ejercer las demás.<br><br> Una persona encarcelada injustamente no puede participar en decisiones, expresar ideas ni desarrollar su vida plenamente. La ética exige que los sistemas jurídicos respeten este derecho y que cualquier privación de la libertad esté justificada, proporcional y basada en el respeto a la dignidad humana."
+  },
+  "Libertad Moral": {
+    "concepto": "Consiste en la capacidad de actuar conforme al propio juicio moral, es decir, de discernir entre lo correcto y lo incorrecto según la conciencia individual. Aquí el individuo no actúa simplemente por obligación, miedo o deseo, sino porque ha interiorizado principios que considera valiosos.   Ética y libertad moral están íntimamente unidas. El sujeto moral es aquel que, pudiendo hacer el mal, elige libremente hacer el bien. <br><br>Esta forma de libertad exige educación moral, reflexión constante y autoconocimiento. <br><br> Es un tipo de libertad profundamente personal y, al mismo tiempo, socialmente significativa, ya que permite la construcción de sociedades donde las acciones buenas no dependen solo de leyes, sino del compromiso individual con la justicia."
+  },
+  "Libertad Política": {
+    "concepto": "Se refiere al derecho de los ciudadanos a participar en las decisiones del Estado y de la sociedad, ya sea mediante el voto, el derecho a expresarse públicamente, fundar partidos, formar movimientos sociales, participar en protestas o acceder a cargos públicos.    Esta libertad es el pilar de la democracia. Sin libertad política, la ciudadanía es solo nominal. La ética política exige que las instituciones garanticen el respeto a la pluralidad de ideas, el derecho a la información y la transparencia. <br><br> También exige que los ciudadanos ejerzan esta libertad con responsabilidad, informándose, respetando al adversario y buscando el bien común más allá de intereses individuales o partidistas."
+  },
+  "Libertad Interior": {
+    "concepto": "Es la más profunda de todas las libertades. Se manifiesta en la capacidad del individuo para dominar sus emociones, deseos e impulsos, y actuar conforme a la razón y los valores. Una persona puede tener todas las libertades externas, pero estar “esclavizada” por la ira, el miedo, la envidia o la ignorancia.   Desde el punto de vista ético, esta libertad interior es la base de la verdadera autonomía. Implica madurez emocional y espiritual. <br><br>Una persona libre interiormente es menos manipulable, más reflexiva y más coherente. Esta libertad no se impone desde fuera; se cultiva mediante el autoconocimiento, la formación moral y el esfuerzo por superarse."
+  },
+  "Libertad de Culto": {
+    "concepto": "Garantiza el derecho a creer o no creer, a practicar una religión o ninguna, a expresar la fe en público o en privado. Esta libertad reconoce que la dimensión espiritual o religiosa del ser humano es parte integral de su dignidad.   Ética y religión no son sinónimos, pero se relacionan. El respeto a la libertad de culto es una exigencia ética de las sociedades pluralistas. Obligar a alguien a creer o impedirle practicar su fe es una forma de opresión. <br><br>Esta libertad también implica responsabilidad: practicar la religión sin imponerla a los demás ni usarla como excusa para discriminar o violentar."
+  },
+  "Libertad de Elección": {
+    "concepto": "Se refiere a la capacidad de decidir sobre los aspectos fundamentales de la vida: qué estudiar, con quién relacionarse, dónde vivir, cómo vestirse, etc. Esta libertad no debe confundirse con el capricho; se trata de elegir de manera informada, consciente y responsable.  <br><br>  Desde la ética, la libertad de elección debe estar orientada por valores y por el respeto a los demás. <br><br>En sociedades de consumo, esta libertad a veces se reduce a “elegir entre productos”, pero su dimensión más profunda está en decidir cómo vivir, cómo amar, cómo contribuir al mundo. <br><br> Una elección sin sentido ético puede ser una forma de alienación, no de libertad."
+  },
+  "Libertad de Circulación": {
+    "concepto": "Es la capacidad de moverse dentro del territorio nacional y salir del país si se desea. Esta libertad está vinculada con la búsqueda de oportunidades, la seguridad y la identidad personal. Su restricción puede convertirse en una forma de control social, como se observa en regímenes autoritarios o en contextos de guerra. <br><br>   Ética y movilidad están relacionadas cuando se piensa, por ejemplo, en la situación de los migrantes. Negar la posibilidad de circular libremente puede vulnerar derechos fundamentales. La libertad de circulación también debe ser ejercida con responsabilidad, respetando normas sanitarias, culturales y ambientales del entorno que se visita."
+  },
+  "Libertad Académica": {
+    "concepto": "Consiste en el derecho de enseñar, investigar, aprender y debatir sin ser censurado. Es esencial para el avance del conocimiento, la creatividad y la formación del pensamiento crítico. Una sociedad que no respeta la libertad académica está condenada al estancamiento intelectual y a la obediencia ciega. <br><br>   Desde la ética, esta libertad implica responsabilidad intelectual. No se trata de decir cualquier cosa sin fundamento, sino de argumentar con base en evidencia, de abrirse al diálogo, y de educar para la verdad y no para la manipulación. Los docentes y estudiantes que ejercen esta libertad son actores clave en la transformación social."
+  },
+  "Relación entre libertad y ética": {
+    "concepto": "La ética solo puede existir en un contexto de libertad. Esto se debe a que la ética implica la capacidad de elegir lo correcto, lo justo, lo bueno. Si una persona no tiene libertad, no puede ser considerada moralmente responsable. Por ejemplo, no juzgamos moralmente a alguien que actúa bajo amenaza de muerte, porque no es libre.  <br><br>La libertad permite la acción consciente y voluntaria. Pero no toda acción libre es ética. Por eso, la ética busca guiar el uso de la libertad hacia fines positivos: la dignidad humana, el respeto mutuo y el bien común. En la práctica, esto significa que una persona ética no actúa simplemente porque “puede hacerlo”, sino porque considera que “es lo correcto”. Por ejemplo, alguien puede tener libertad de expresión, pero elige no insultar a otros porque entiende que el respeto es un valor ético superior."
+  },
+  "Relación entre libertad y responsabilidad social": {
+    "concepto": "La libertad no es solo un derecho individual, también es una responsabilidad colectiva. Vivimos en sociedad, y nuestras acciones, aunque sean personales, siempre tienen consecuencias sobre los demás. Por eso, ejercer la libertad implica considerar su impacto en el entorno social.  <br><br>La responsabilidad social es la actitud de asumir que nuestras decisiones no son aisladas: afectan a la familia, a la comunidad, al medio ambiente, a las generaciones futuras. Una persona responsable no usa su libertad para perjudicar, sino para construir. Ejemplo realista: Una persona tiene la libertad de conducir, pero si lo hace bajo los efectos del alcohol, está poniendo en peligro la vida de otros. Su acto deja de ser responsable, y por lo tanto, deja de ser ético."
+  },
+  "Autonomía": {
+    "concepto": "La autonomía es algo que va más allá de simplemente poder decidir: es saber decidir. Es cuando no dejamos que otros piensen por nosotros, cuando no actuamos solo por moda, por miedo o por presión. Es cuando escuchamos nuestra voz interior y la seguimos con firmeza, incluso si eso significa ir contra la corriente. <br><br>Ser autónomo es aprender a confiar en uno mismo, tomar decisiones desde nuestros valores, y aceptar las consecuencias de esas decisiones con madurez. Es ser dueño de nuestra vida, no desde la rebeldía, sino desde la conciencia. Autonomía es libertad con propósito, con profundidad, con sentido.",
+    "hijos": ["Concepto de Autonomía", "Relación entre autonomía y ética", "Relación entre autonomía y responsabilidad social"]
+  },
+  "Concepto de Autonomía": {
+    "concepto": "La autonomía es la capacidad de una persona para gobernarse a sí misma. Es más que libertad: implica saber usarla de forma reflexiva y coherente..."
+  },
+  "Relación entre autonomía y ética": {
+    "concepto": "La autonomía es la capacidad de tomar decisiones personales basadas en la razón, los principios y los valores propios. No es simplemente “hacer lo que uno quiere”, sino “hacer lo que uno considera correcto” después de un proceso reflexivo. Esto la convierte en un componente fundamental de la ética.  Una persona autónoma actúa por convicción, no por miedo ni por presión. Su comportamiento ético es más auténtico, porque nace de su interior. Cuando alguien hace el bien solo para evitar castigos, su acción no es completamente ética; en cambio, si lo hace por convicción personal, se eleva al nivel más alto de moralidad. Ejemplo concreto: Un estudiante que decide no copiar en un examen aunque sepa que no será descubierto, demuestra autonomía ética: no necesita vigilancia externa para actuar correctamente."
+  },
+  "Relación entre autonomía y responsabilidad social": {
+    "concepto": "Muchas veces se confunde autonomía con individualismo. Sin embargo, la autonomía no significa aislarse ni hacer lo que se quiera sin consecuencias. Una persona autónoma reconoce que su libertad está vinculada a la de los demás. Por tanto, su responsabilidad también incluye considerar el impacto de sus decisiones en la comunidad. La autonomía ética está al servicio de lo colectivo. No se trata de actuar solo para uno mismo, sino de elegir actuar de forma que se respete y se beneficie a los otros. En este sentido, la autonomía está orientada hacia una ética de la solidaridad, la cooperación y el cuidado mutuo.  Ejemplo:  Un empresario autónomo que decide aplicar prácticas sostenibles en su empresa, aunque no esté obligado por ley, está actuando con responsabilidad social: su decisión parte de su autonomía, pero busca el bienestar general."
+  },
+  "Diferencia entre libertad y autonomía": {
+    "concepto": "La libertad y la autonomía son conceptos relacionados, pero no idénticos. Ambos están presentes en la vida ética y ciudadana de una persona, y aunque se influencian mutuamente, cada uno tiene un enfoque distinto. La libertad es la capacidad de elegir. Es un derecho que permite actuar o no actuar, hablar, decidir, moverse, creer o no creer, entre muchas otras cosas. \n Es fundamental para la dignidad humana porque sin libertad una persona no puede ser verdaderamente responsable de sus actos. Sin embargo, la libertad es una herramienta: tenerla no garantiza que se use bien.  Ahí es donde entra la autonomía. Ser autónomo significa saber usar la libertad. Es decidir con conciencia, con responsabilidad, con base en valores y principios propios, no por impulso ni por obligación. La autonomía no se impone ni se hereda: se construye a través del pensamiento crítico, la experiencia y la reflexión personal.  La gran diferencia es que la libertad es externa (las opciones que tengo), mientras que la autonomía es interna (la capacidad que tengo para elegir bien entre esas opciones). La libertad me abre caminos; la autonomía me ayuda a saber cuál tomar. Por ejemplo, dos personas pueden tener la misma libertad para elegir una carrera profesional. Una lo hace porque realmente le apasiona y lo ha reflexionado. La otra lo hace por presión familiar, por moda o por miedo. Solo la primera está actuando con autonomía."
+  }
+}
+
+  let historial = [], bloqueado = false, rotacionZ = 0;
+
+  function limpiarMapa(callback) {
+    mapa.innerHTML = "";
+    fullview.classList.remove("active");
+    if (callback) setTimeout(callback, 300);
+  }
+
+  function crearNodo(texto, x, y, onclick, delay = 0) {
+    const div = document.createElement("div");
+    const variaciones = ["nube1", "nube2", "nube3", "nube4", "nube5", "nube6", "nube7", "nube8", "nube9", "nube10"];
+const claseNube = variaciones[Math.floor(Math.random() * variaciones.length)];
+    div.className = `node ${claseNube}`;
+    div.innerText = texto;
+    div.style.left = `${x}px`;
+    div.style.top = `${y}px`;
+    div.style.borderColor = colores[texto] || "#888";
+    div.style.background = colores[texto] || "#666";
+    div.style.transitionDelay = `${delay}ms`;
+    div.onclick = () => onclick(texto);
+    mapa.appendChild(div);
+    setTimeout(() => div.classList.add("show"), 10);
+  }
+
+  function expandirNodo(titulo, texto, color) {
+    fullview.innerHTML = `<h1>${titulo}</h1><p>${texto}</p>`;
+    fullview.style.background = color;
+    fullview.classList.add("active");
+    fullview.querySelector("h1").onclick = () => {
+      const anterior = historial.pop();
+      mostrarMapa(anterior || "raiz");
+    };
+  }
+
+  function mostrarMapa(nodoActual) {
+    if (bloqueado) return;
+    bloqueado = true;
+    rotacionZ += 360;
+    mapa.style.transform = `rotateZ(${rotacionZ}deg)`;
+
+
+    setTimeout(() => {
+      limpiarMapa(() => {
+        const nodo = contenidos[nodoActual] || contenidos["raiz"];
+        const hijos = nodo.hijos || [];
+        const cx = mapa.offsetWidth / 2;
+        const cy = mapa.offsetHeight / 2;
+
+        if (nodosTerminales.includes(nodoActual)) {
+          const color = getComputedStyle(document.documentElement).getPropertyValue(colores[nodoActual].replace("var(", "").replace(")", "")) || "#333";
+          expandirNodo(nodoActual, nodo.concepto, color);
+          bloqueado = false;
+          return;
+        }
+
+        crearNodo(nodoActual === "raiz" ? nodo.texto : nodoActual, cx - 80, cy - 80, () => {
+          if (nodoActual === "raiz") return;
+          const anterior = historial.pop();
+          mostrarMapa(anterior || "raiz");
+        });
+
+        const angInc = (2 * Math.PI) / hijos.length;
+        const radius = 300;
+        hijos.forEach((hijo, i) => {
+          const ang = i * angInc - Math.PI / 2;
+          const x = cx + radius * Math.cos(ang) - 80;
+          const y = cy + radius * Math.sin(ang) - 80;
+          crearNodo(hijo, x, y, () => {
+            historial.push(nodoActual);
+            mostrarMapa(hijo);
+          }, i * 100);
+        });
+      });
+      setTimeout(() => bloqueado = false, 700);
+    }, 400);
+  }
+
+  mostrarMapa("raiz");
+</script>
+</body>
+</html>
